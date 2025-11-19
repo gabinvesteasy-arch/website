@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Refund - Sign Up</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    /* Background (same as login) */
+    body {
+        background: url('https://picsum.photos/id/1011/1920/1080') no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 1%, transparent 1%);
+        background-size: 50px 50px;
+        animation: moveBg 20s linear infinite;
+        z-index: 0;
+    }
+
+    @keyframes moveBg {
+        0% { transform: translate(0,0); }
+        100% { transform: translate(-100px,-100px); }
+    }
+
+    /* Video footage overlay */
+    #footage {
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        width: 80%;
+        height: 60%;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 1;
+    }
+
+    #footage video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Animated widgets inside footage */
+    .widget {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+        font-size: 18px;
+        animation: floatAnim 4s ease-in-out infinite;
+        transition: 0.3s;
+        z-index: 2;
+    }
+
+    .widget:hover {
+        background: #ffb400;
+        color: #000;
+    }
+
+    @keyframes floatAnim {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+
+    /* Signup container */
+    .signup-container {
+        position: relative;
+        z-index: 2;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        padding: 50px;
+        border-radius: 20px;
+        width: 420px;
+        text-align: center;
+        color: #fff;
+        animation: fadeIn 1s ease-out;
+        background: url('https://images.unsplash.com/photo-1573164574230-72b6469b3b5f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VufDE2fHxjYW5hZGlhbnxlbnwwfHx8fDE2OTcwNDA1ODc&ixlib=rb-4.0.3&q=80&w=800') no-repeat center center/cover;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(-30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        margin-bottom: 30px;
+        font-size: 32px;
+        text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: #ffb400;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #ffd54f;
+    }
+
+    .links, .crypto-links, .fintech-links {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .links a, .crypto-links a, .fintech-links a {
+        color: #ffb400;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .links a:hover, .crypto-links a:hover, .fintech-links a:hover {
+        color: #ffd54f;
+    }
+
+    .social-login {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .social-login a {
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+        font-size: 20px;
+        transition: 0.3s;
+    }
+
+    .social-login a:hover {
+        background: #ffb400;
+        color: #000;
+    }
+
+    p.login-link {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    p.login-link a {
+        color: #ffb400;
+        text-decoration: none;
+    }
+
+    p.login-link a:hover {
+        color: #ffd54f;
+    }
+</style>
+<script src="https://kit.fontawesome.com/your_kit_id.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- Floating footage overlay -->
+<div id="footage">
+    <video autoplay muted loop>
+        <source src="https://www.videvo.net/videvo_files/converted/2016_08/preview/160805_03_FinancialCity_1080p.mp446561.webm" type="video/webm">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <!-- Animated widgets inside footage -->
+    <a href="https://www.coinbase.com" target="_blank" class="widget" style="top: 10%; left: 15%;"><i class="fab fa-bitcoin"></i></a>
+    <a href="https://www.paypal.com" target="_blank" class="widget" style="top: 30%; left: 70%;"><i class="fab fa-paypal"></i></a>
+    <a href="https://www.stripe.com" target="_blank" class="widget" style="top: 60%; left: 30%;"><i class="fas fa-credit-card"></i></a>
+    <a href="https://www.binance.com" target="_blank" class="widget" style="top: 45%; left: 50%;"><i class="fab fa-btc"></i></a>
+</div>
+
+<!-- Signup form -->
+<div class="signup-container">
+    <h2>World Refund - Sign Up</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <div class="links">
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+    </div>
+
+    <div class="social-login">
+        <a href="#" title="Sign up with Google"><i class="fab fa-google"></i></a>
+        <a href="#" title="Sign up with Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" title="Sign up with Twitter"><i class="fab fa-twitter"></i></a>
+    </div>
+
+    <div class="crypto-links">
+        <a href="https://www.coinbase.com/" target="_blank">Coinbase</a>
+        <a href="https://www.binance.com/" target="_blank">Binance</a>
+        <a href="https://www.kraken.com/" target="_blank">Kraken</a>
+    </div>
+
+    <div class="fintech-links">
+        <a href="https://www.paypal.com/" target="_blank">PayPal</a>
+        <a href="https://www.stripe.com/" target="_blank">Stripe</a>
+        <a href="https://www.squarespace.com/" target="_blank">Square</a>
+    </div>
+
+    <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+
+</body>
+</html>

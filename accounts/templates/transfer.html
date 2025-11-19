@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transfer Funds - World Refund</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: url('https://t4.ftcdn.net/jpg/04/41/32/01/360_F_441320165_xpdWOYhS3s9Xp99dCUL1Fo3tXcOH72AY.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .transfer-container {
+            background: rgba(0,0,0,0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        .form-control {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px;
+        }
+        .form-control:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: #4dabf7;
+            color: white;
+            box-shadow: 0 0 0 0.2rem rgba(77, 171, 247, 0.25);
+        }
+        .btn-transfer {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            width: 100%;
+        }
+        .btn-transfer:hover {
+            background: linear-gradient(135deg, #339af0, #228be6);
+            transform: translateY(-2px);
+        }
+        .bank-options {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            margin-top: 5px;
+            display: none;
+            position: absolute;
+            width: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+        }
+        .bank-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .bank-option:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .bank-option:last-child {
+            border-bottom: none;
+        }
+        .bank-input-container {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="transfer-container">
+        <h2 class="text-center mb-4"><i class="fas fa-paper-plane me-2"></i>Transfer Funds</h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method='post'>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Recipient Email:</label>
+                <input type='email' name='to_user' class="form-control" placeholder="Enter recipient's email" required>
+            </div>
+            
+            <div class="mb-3 bank-input-container">
+                <label class="form-label">Recipient Bank:</label>
+                <input type='text' name='recipient_bank' class="form-control" placeholder="Type or select bank" id="bankInput" required>
+                <div class="bank-options" id="bankOptions">
+                    <div class="bank-option" data-bank="TD Bank">TD Bank</div>
+                    <div class="bank-option" data-bank="BMO">BMO</div>
+                    <div class="bank-option" data-bank="RBC">RBC</div>
+                    <div class="bank-option" data-bank="Scotiabank">Scotiabank</div>
+                    <div class="bank-option" data-bank="CIBC">CIBC</div>
+                    <div class="bank-option" data-bank="Wise">Wise</div>
+                    <div class="bank-option" data-bank="Bank of America">Bank of America</div>
+                    <div class="bank-option" data-bank="Chase">Chase</div>
+                    <div class="bank-option" data-bank="Wells Fargo">Wells Fargo</div>
+                    <div class="bank-option" data-bank="Other">Other Bank</div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Amount ($):</label>
+                <input type='number' step='0.01' name='amount' class="form-control" placeholder="0.00" min="0.01" required>
+            </div>
+            
+            <button type='submit' class="btn btn-transfer mt-3">
+                <i class="fas fa-paper-plane me-2"></i>Send
+            </button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Bank selection functionality
+        const bankInput = document.getElementById('bankInput');
+        const bankOptions = document.getElementById('bankOptions');
+        
+        bankInput.addEventListener('focus', function() {
+            bankOptions.style.display = 'block';
+        });
+        
+        bankInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const options = bankOptions.getElementsByClassName('bank-option');
+            
+            for (let option of options) {
+                const bankName = option.getAttribute('data-bank').toLowerCase();
+                if (bankName.includes(searchTerm)) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+        });
+        
+        // Close bank options when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!bankInput.contains(e.target) && !bankOptions.contains(e.target)) {
+                bankOptions.style.display = 'none';
+            }
+        });
+        
+        // Select bank option
+        bankOptions.addEventListener('click', function(e) {
+            if (e.target.classList.contains('bank-option')) {
+                bankInput.value = e.target.getAttribute('data-bank');
+                bankOptions.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
