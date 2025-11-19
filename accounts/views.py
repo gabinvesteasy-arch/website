@@ -5,6 +5,8 @@ from django.contrib import messages
 from .models import Account, Transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout  # ADD THIS IMPORT
+from django.http import HttpResponse
+
 # ---------------------------
 # LOGIN VIEW
 # ---------------------------
@@ -113,3 +115,11 @@ def transfer(request):
         return redirect("dashboard")
     
     return render(request, "transfer.html", {"account": account})
+
+def create_admin(request):
+    # Check if admin already exists
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'gabinvesteasy@gmail.com', 'adminpassword123')
+        return HttpResponse("Admin user created successfully! Username: admin, Password: adminpassword123")
+    else:
+        return HttpResponse("Admin user already exists!")

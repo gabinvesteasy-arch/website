@@ -15,8 +15,8 @@ urlpatterns = [
     path('', account_views.dashboard, name='dashboard'),
 
     # Banking views
-   
     path('transfer/', account_views.transfer, name='transfer'),
 
-   
+    # Temporary admin creation (REMOVE AFTER USE)
+    path('createadmin/', account_views.create_admin, name='create_admin'),
 ]
